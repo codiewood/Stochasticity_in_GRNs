@@ -3,6 +3,7 @@ function [ssa_t, ssa_simdata, ssa_names] = SSA_4D_GRN(inputs)
 %   Inputs:
 %       inputs = {molA,molB,molC,molD,g0,g1,k,hr,fr,ha,fa}
 %       molA, molB, molC, molD; Number of molecules of unbound promoters A - D
+%       mola, molb, molc, mold; Number of molecules of proteins a - d
 %       g0; Rate parameter of unactivated protein production
 %       g1; Rate parameter of activated protein production
 %       k; Protein degradation rate
@@ -13,9 +14,9 @@ function [ssa_t, ssa_simdata, ssa_names] = SSA_4D_GRN(inputs)
 
 %Set default parameter values
 numargs = length(inputs);
-args = {1,1,1,1,5,14,1,1e-4,1e-2,2,1e-1};
+args = {1,1,1,1,0,0,0,0,5,14,1,1e-4,1e-2,2,1e-1};
 args(1:numargs) = inputs;
-[molA,molB,molC,molD,g0,g1,k,hr,fr,ha,fa] = args{:};
+[molA,molB,molC,molD,mola,molb,molc,mold,g0,g1,k,hr,fr,ha,fa] = args{:};
 
 %create model
 Mobj = sbiomodel('cell');
@@ -69,22 +70,22 @@ Robj36 = addreaction(Mobj,'D01 + 2 d <-> D11');
 
 %initialise species amount
 Mobj.Species(1).InitialAmount = 0;
-Mobj.Species(2).InitialAmount = 0;
+Mobj.Species(2).InitialAmount = mola;
 Mobj.Species(3).InitialAmount = molA;
 Mobj.Species(4).InitialAmount = 0;
 Mobj.Species(5).InitialAmount = 0;
 Mobj.Species(6).InitialAmount = 0;
-Mobj.Species(7).InitialAmount = 0;
+Mobj.Species(7).InitialAmount = molb;
 Mobj.Species(8).InitialAmount = molB;
 Mobj.Species(9).InitialAmount = 0;
 Mobj.Species(10).InitialAmount = 0;
 Mobj.Species(11).InitialAmount = 0;
-Mobj.Species(12).InitialAmount = 0;
+Mobj.Species(12).InitialAmount = molc;
 Mobj.Species(13).InitialAmount = molC;
 Mobj.Species(14).InitialAmount = 0;
 Mobj.Species(15).InitialAmount = 0;
 Mobj.Species(16).InitialAmount = 0;
-Mobj.Species(17).InitialAmount = 0;
+Mobj.Species(17).InitialAmount = mold;
 Mobj.Species(18).InitialAmount = molD;
 Mobj.Species(19).InitialAmount = 0;
 Mobj.Species(20).InitialAmount = 0;

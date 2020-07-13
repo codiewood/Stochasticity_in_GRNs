@@ -1,8 +1,9 @@
 function [ode_t, ode_simdata, ode_names] = ODE_4D_GRN(inputs)
 %A function to simulate ODE model of a 4D GRN based on input parameters
 %   Inputs:
-%       inputs = {molA,molB,molC,molD,g0,g1,k,hr,fr,ha,fa}
+%       inputs = {molA,molB,molC,molD,mola,molb,molc,mold,g0,g1,k,hr,fr,ha,fa}
 %       molA, molB, molC, molD; Number of molecules of unbound promoters A - D
+%       mola, molb, molc, mold; Number of molecules of proteins a - d
 %       g0; Rate parameter of unactivated protein production
 %       g1; Rate parameter of activated protein production
 %       k; Protein degradation rate
@@ -13,9 +14,9 @@ function [ode_t, ode_simdata, ode_names] = ODE_4D_GRN(inputs)
 
 %Set default parameter values
 numargs = length(inputs);
-args = {1,1,1,1,5,14,1,1e-4,1e-2,2,1e-1};
+args = {1,1,1,1,0,0,0,0,5,14,1,1e-4,1e-2,2,1e-1};
 args(1:numargs) = inputs;
-[molA,molB,molC,molD,g0,g1,k,hr,fr,ha,fa] = args{:};
+[molA,molB,molC,molD,mola,molb,molc,mold,g0,g1,k,hr,fr,ha,fa] = args{:};
 
 %create model
 Mobj = sbiomodel('cell');
