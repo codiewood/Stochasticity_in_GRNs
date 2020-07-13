@@ -1,11 +1,11 @@
 function [ode_t, ode_simdata, ode_names] = ODE_4D_GRN(inputs)
 %A function to simulate ODE model of a 4D GRN based on input parameters
 %   Inputs:
-%       inputs = {mola,molb,molc,mold,g0,g1,k,hr,fr,ha,fa}
-%       mola, molb, molc, mold; Number of molecules of proteins a - d
+%       inputs = {molA,molB,molC,molD,g0,g1,k,hr,fr,ha,fa}
+%       molA, molB, molC, molD; Number of molecules of unbound promoters A - D
 %       g0; Rate parameter of unactivated protein production
 %       g1; Rate parameter of activated protein production
-%       k; Protein degradration rate
+%       k; Protein degradation rate
 %       hr; Rate parameter of repressor binding
 %       fr; Rate parameter of repressor unbinding
 %       ha; Rate parameter of activator binding
@@ -15,7 +15,7 @@ function [ode_t, ode_simdata, ode_names] = ODE_4D_GRN(inputs)
 numargs = length(inputs);
 args = {1,1,1,1,5,14,1,1e-4,1e-2,2,1e-1};
 args(1:numargs) = inputs;
-[mola,molb,molc,mold,g0,g1,k,hr,fr,ha,fa] = args{:};
+[molA,molB,molC,molD,g0,g1,k,hr,fr,ha,fa] = args{:};
 
 %create model
 Mobj = sbiomodel('cell');
@@ -70,22 +70,22 @@ Robj36 = addreaction(Mobj,'D01 + 2 d <-> D11');
 %initialise species amount
 Mobj.Species(1).InitialAmount = 0;
 Mobj.Species(2).InitialAmount = 0;
-Mobj.Species(3).InitialAmount = mola;
+Mobj.Species(3).InitialAmount = molA;
 Mobj.Species(4).InitialAmount = 0;
 Mobj.Species(5).InitialAmount = 0;
 Mobj.Species(6).InitialAmount = 0;
 Mobj.Species(7).InitialAmount = 0;
-Mobj.Species(8).InitialAmount = molb;
+Mobj.Species(8).InitialAmount = molB;
 Mobj.Species(9).InitialAmount = 0;
 Mobj.Species(10).InitialAmount = 0;
 Mobj.Species(11).InitialAmount = 0;
 Mobj.Species(12).InitialAmount = 0;
-Mobj.Species(13).InitialAmount = molc;
+Mobj.Species(13).InitialAmount = molC;
 Mobj.Species(14).InitialAmount = 0;
 Mobj.Species(15).InitialAmount = 0;
 Mobj.Species(16).InitialAmount = 0;
 Mobj.Species(17).InitialAmount = 0;
-Mobj.Species(18).InitialAmount = mold;
+Mobj.Species(18).InitialAmount = molD;
 Mobj.Species(19).InitialAmount = 0;
 Mobj.Species(20).InitialAmount = 0;
 Mobj.Species(21).InitialAmount = 0;
@@ -372,7 +372,7 @@ Kobj36 = addkineticlaw(Robj36,'MassAction');
 configset = getconfigset(Mobj);
 configset.CompileOptions.DimensionalAnalysis = true;
 configset.SolverType = 'ode15s';
-configset.StopTime = 1000;
+configset.StopTime = 1000000;
 solver = configset.SolverOptions;
 set(configset.SolverOptions, 'AbsoluteTolerance', 1.0e-8);
 
