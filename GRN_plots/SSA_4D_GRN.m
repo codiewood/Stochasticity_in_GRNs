@@ -1,7 +1,7 @@
 function [ssa_t, ssa_simdata, ssa_names] = SSA_4D_GRN(inputs)
 %A function to simulate SSA model of a 4D GRN based on input parameters
 %   Inputs:
-%       inputs = {molA,molB,molC,molD,g0,g1,k,hr,fr,ha,fa}
+%       inputs = {molA,molB,molC,molD,mola,molb,molc,mold,g0,g1,k,hr,fr,ha,fa}
 %       molA, molB, molC, molD; Number of molecules of unbound promoters A - D
 %       mola, molb, molc, mold; Number of molecules of proteins a - d
 %       g0; Rate parameter of unactivated protein production
