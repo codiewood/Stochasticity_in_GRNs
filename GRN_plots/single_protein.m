@@ -23,8 +23,8 @@ Kobj2 = addkineticlaw(Robj2,'MassAction');
 Kobj3 = addkineticlaw(Robj3,'MassAction');
 Kobj4 = addkineticlaw(Robj4,'MassAction');
 %Rate parameters
-g0 = 15;
-g1 = 4;
+g0 = 14;
+g1 = 5;
 k=1;
 hr = 1e-4;
 fr = 1e-2;
@@ -65,6 +65,12 @@ ssa_solver.LogDecimation = 10;
 
 %do sim
 [t, simdata, names] = sbiosimulate(Mobj);
-histogram(simdata(:,2),15)
+figure;
+    histogram(simdata(:,2),15)
 figure;
     plot(t, simdata(:,[2]), 'LineWidth', 1.5)
+    xlim([0 1000])
+    yyaxis right
+    plot(t, simdata(:,[1]), 'LineWidth', 1.5)
+    ylim([-0.5 2])
+    legend('Protein a', 'Unbound promoter')
