@@ -1,5 +1,16 @@
 %simulate SSA and ODE model
-inputs = {5,5,5,5};
+%   inputs = {molA,molB,molC,molD,mola,molb,molc,mold,g0,g1,k,hr,fr,ha,fa}
+%       molA, molB, molC, molD; Number of molecules of unbound promoters A - D
+%       mola, molb, molc, mold; Number of molecules of proteins a - d
+%       g0; Rate parameter of unactivated protein production
+%       g1; Rate parameter of activated protein production
+%       k; Protein degradation rate
+%       hr; Rate parameter of repressor binding
+%       fr; Rate parameter of repressor unbinding
+%       ha; Rate parameter of activator binding
+%       fa; Rate parameter of activator unbinding
+
+inputs = {1,1,1,1};
 [ssa_t, ssa_simdata, ssa_names] = SSA_4D_GRN(inputs);
 [ode_t, ode_simdata, ode_names] = ODE_4D_GRN(inputs);
 
@@ -10,6 +21,7 @@ figure;
     hold on
     plot(ode_t, ode_simdata(:,[2,7,12,17]), ':', 'LineWidth', 3)
     xlabel('Time (secs)')
+    xlim([0 1000])
     ylabel('Molecule number')
     title('Molecule numbers vs Time')
     legend({'SSA Protein a','SSA Protein b','SSA Protein c','SSA Protein d', ...
