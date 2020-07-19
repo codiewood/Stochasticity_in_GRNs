@@ -1,5 +1,5 @@
 function [Mobj] = model_4D_GRN(inputs)
-%A function to simulate a model object of a 1-4D GRN based on input
+%A function to simulate a model object of a 4D GRN based on input
 %parameters, which can then be simulated by SSA or ODE methods.
 %   Inputs:
 %       inputs = {molA,molB,molC,molD,mola,molb,molc,mold,g0,g1,k,hr,fr,ha,fa}
