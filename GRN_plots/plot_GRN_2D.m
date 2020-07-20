@@ -9,8 +9,7 @@
 %       ha; Rate parameter of activator binding
 %       fa; Rate parameter of activator unbinding
 %%
-for p = [0,50,25,20,14,5]
-inputs = {1,1,p,p,5,14,1,1e-4,1e-2,2,1e-1};
+inputs = {1,1,0,0,5,14,1,1e-4,1e-2,2,1e-1};
 Mobj = model_2D_GRN(inputs);
 [ssa_t, ssa_simdata, ssa_names] = SSA_GRN_sim(Mobj);
 [ode_t, ode_simdata, ode_names] = ODE_GRN_sim(Mobj);
@@ -48,4 +47,3 @@ figure;
     b.FaceColor = [0.850980392156863 0.325490196078431 0.0980392156862745];
     xlabel(t,'Molecule number')
     ylabel(t,'Frequency')
-end
