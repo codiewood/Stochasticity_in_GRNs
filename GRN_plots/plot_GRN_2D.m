@@ -11,6 +11,7 @@
 %% 
 % runs simulations and sets default parameter values
 inputs = {1,1,0,0,5,14,1,1e-4,1e-2,2,1e-1};
+
 numargs = length(inputs);
 args = {1,1,0,0,5,14,1,1e-4,1e-2,2,1e-1};
 args(1:numargs) = inputs;
@@ -26,7 +27,7 @@ figure;
     title('Molecule numbers vs Time')
     plot(ssa_t, ssa_simdata(:,[2,7]), 'LineWidth', 1.5)
     hold on
-    plot(ode_t, ode_simdata(:,[2,7]), ':', 'LineWidth', 3)
+    plot(ode_t, ode_simdata(:,[2,7]), '-d', 'LineWidth', 1.5, 'MarkerSize', 5)
     xlabel('Time (secs)')
     xlim([0 1000])
     ylabel('Molecule number')
@@ -50,3 +51,16 @@ figure;
     b.FaceColor = [0.850980392156863 0.325490196078431 0.0980392156862745];
     xlabel(t,'Molecule number')
     ylabel(t,'Frequency')
+%%
+%calculate proportion of time promoters spend in each state
+
+t = length(ssa_t);
+v = zeros(1,2);
+j = 1;
+for i = [4,9];
+    s = sum(ssa_simdata(:,[i]));
+    p = s/t;
+    v(j) = p;
+    j = j+1;
+end
+v
