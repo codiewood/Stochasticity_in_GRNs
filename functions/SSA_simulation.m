@@ -1,4 +1,4 @@
-function [ssa_t, ssa_simdata, ssa_names] = SSA_GRN_sim(Mobj)
+function [ssa_t, ssa_simdata, ssa_names] = SSA_simulation(Mobj)
 %A function to simulate a stochastic model of a GRN based on an input model
 %object.
     

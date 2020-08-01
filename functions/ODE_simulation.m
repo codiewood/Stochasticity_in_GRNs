@@ -1,4 +1,4 @@
-function [ode_t, ode_simdata, ode_names] = ODE_GRN_sim(Mobj)
+function [ode_t, ode_simdata, ode_names] = ODE_simulation(Mobj)
 %A function to simulate an ODE model of a GRN based on an input model
 %object.
 

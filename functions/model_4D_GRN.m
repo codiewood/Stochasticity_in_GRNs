@@ -18,6 +18,7 @@ numargs = length(inputs);
 args = {1,1,1,1,0,0,0,0,5,14,1,1e-4,1e-2,2,1e-1};
 args(1:numargs) = inputs;
 [molA,molB,molC,molD,mola,molb,molc,mold,g0,g1,k,hr,fr,ha,fa] = args{:};
+params = [molA,molB,molC,molD,mola,molb,molc,mold,g0,g1,k,hr,fr,ha,fa];
 
 %create model
 Mobj = sbiomodel('cell');

@@ -10,7 +10,7 @@
 %       fa; Rate parameter of activator unbinding
 %% 
 % runs simulations and sets default parameter values
-inputs = {1,1,0,0,5,14,1,1e-4,1e-2,2,1e-1};
+inputs = {1,1,14,14,5,14,1,1e-4,1e-2,2,1e-1};
 
 numargs = length(inputs);
 args = {1,1,0,0,5,14,1,1e-4,1e-2,2,1e-1};
@@ -18,8 +18,8 @@ args(1:numargs) = inputs;
 [molA,molB,mola,molb,g0,g1,k,hr,fr,ha,fa] = args{:};
 
 Mobj = model_2D_GRN(inputs);
-[ssa_t, ssa_simdata, ssa_names] = SSA_GRN_sim(Mobj);
-[ode_t, ode_simdata, ode_names] = ODE_GRN_sim(Mobj);
+[ssa_t, ssa_simdata, ssa_names] = SSA_simulation(Mobj);
+[ode_t, ode_simdata, ode_names] = ODE_simulation(Mobj);
 %% 
 %plots figures
 figure;
@@ -51,16 +51,19 @@ figure;
     b.FaceColor = [0.850980392156863 0.325490196078431 0.0980392156862745];
     xlabel(t,'Molecule number')
     ylabel(t,'Frequency')
+
 %%
 %calculate proportion of time promoters spend in each state
 
 t = length(ssa_t);
-v = zeros(1,2);
-j = 1;
-for i = [4,9];
-    s = sum(ssa_simdata(:,[i]));
-    p = s/t;
-    v(j) = p;
-    j = j+1;
+max_pr = max([molA,molB,molC,molD]);
+prop = zeros(max_pr+1,2);
+c = 0;
+for i = [4,9]
+    c = c+1;
+    for j = [0:max_pr]
+        count = sum(ssa_simdata(:,i) == j);
+        prop(j+1,c) = count/t;
+    end
 end
-v
+prop
