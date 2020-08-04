@@ -10,7 +10,7 @@
 %       fa; Rate parameter of activator unbinding
 %% 
 % runs simulations and sets default parameter values
-inputs = {1,1,1,1,0,0,0,0,14,30,5,1e-4,1e-2,2,1e-1};
+inputs = {10,10,10,10};
 
 numargs = length(inputs);
 args = {1,1,1,1,0,0,0,0,5,14,1,1e-4,1e-2,2,1e-1};
@@ -21,13 +21,49 @@ Mobj = model_4D_GRN(inputs);
 [ssa_t, ssa_simdata, ssa_names] = SSA_simulation(Mobj);
 [ode_t, ode_simdata, ode_names] = ODE_simulation(Mobj);
 %%
-%calculate proportion of time promoters spend in each state
+%calculate proportion of time promoters spend in each state, the weighted
+%averages of the expected proteins based on promoter state, and the ODE
+%steady state solution.
 
-promoter_state_proportions(ssa_t,ssa_simdata)
+props = promoter_state_proportions(ssa_t,ssa_simdata);
+dims = size(props);
+promoter_num = dims(1)-1;
+exp_protein = zeros(1,promoter_num+1);
+for i = [0:promoter_num]
+    exp_protein(i+1) = (g1*i + g0*(promoter_num-i))/k;
+end
+weighted_averages = exp_protein*props
+ode_ss = ODE_steady_state(ode_simdata)
+
+%%
+%calculate time spent by SSA solution within tolerance of ODE solution
+tol = 5
+ssa = ssa_simdata(:,[2,7,12,17]);
+times = [ode_t;ssa_t];
+times = unique(sort(times));
+odeq = interp1(ode_t,ode_simdata(:,[2,7,12,17]),times);
+ssaq = interp1(ssa_t,ssa_simdata(:,[2,7,12,17]),times);
+ode_ub = odeq + tol;
+ode_lb = odeq - tol;
+ode_lb(ode_lb < 0) = 0;
+
+l = ode_lb <= ssaq & ssaq <= ode_ub;
+time_spent = sum(l)/length(times)
+
+%%
+%ALT:  time spent within tolerance of steady state
+% tol = 5
+% ssa = ssa_simdata(:,[2,7,12,17]);
+% ode_ss = ODE_steady_state(ode_simdata)
+% ode_ub = ode_ss + tol;
+% ode_lb = ode_ss - tol;
+% ode_lb(ode_lb < 0) = 0;
+% 
+% l = ode_lb <= ssa & ssa <= ode_ub;
+% time_spent = sum(l)/length(ssa_t)
 
 %% 
 %plots figures
-
 %line plots (ODE, SSA and expected proteins based on SSA promoter state)
 figure;
     colororder([0 0.447058823529412 0.741176470588235;0.850980392156863 0.325490196078431 0.0980392156862745;0.929411764705882 0.694117647058824 0.125490196078431;0.494117647058824 0.184313725490196 0.556862745098039;0.301960784313725 0.745098039215686 0.933333333333333;1 0.411764705882353 0.16078431372549;1 1 0.0666666666666667;0 0 0;0.301960784313725 0.745098039215686 0.933333333333333;1 0.411764705882353 0.16078431372549;1 1 0.0666666666666667;0 0 0]);
