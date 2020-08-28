@@ -10,7 +10,7 @@
 %       fa; Rate parameter of activator unbinding
 %% 
 % runs simulations and sets default parameter values
-inputs = {1,1,1,1,0,0,0,0,10,30,0.7,1e-4,1e-2,2,1e-1};
+inputs = {};
 
 numargs = length(inputs);
 args = {1,1,1,1,0,0,0,0,5,14,1,1e-4,1e-2,2,1e-1};
@@ -38,6 +38,7 @@ weighted_averages = exp_protein*props
 ode_ss = ODE_steady_state(ode_simdata)
 
 %%
+% VARIANCE METRIC
 % calculate variance around ODE steady state
 
 terms = ssa - ode_ss;
@@ -71,9 +72,10 @@ ode_lb = ode_ss - tol;
 ode_lb(ode_lb < 0) = 0;
 
 l = ode_lb <= ssa & ssa <= ode_ub;
-time_spent = sum(l)/length(ssa_t)
+time_spent_ss = sum(l)/length(ssa_t)
 
 %%
+%CI METRIC
 %time spent within upper and lower bounds based on Poisson percentiles
 times = [ode_t;ssa_t];
 times = unique(sort(times));
@@ -85,7 +87,7 @@ ode_ub_po = poissinv(0.975,ode_ss);
 ode_lb_po = poissinv(0.025,ode_ss);
 
 l_po = ode_lb_po <= ssaq & ssaq <= ode_ub_po;
-time_spent = sum(l_po)/length(times)
+time_spent_po = sum(l_po)/length(times)
 
 %% 
 %plots figures
