@@ -65,12 +65,12 @@ ssa_solver.LogDecimation = 10;
 
 %do sim
 [t, simdata, names] = sbiosimulate(Mobj);
+x = simdata(:,[1]);
 figure;
     histogram(simdata(:,2),15)
 figure;
     plot(t, simdata(:,[2]), 'LineWidth', 1.5)
     xlim([0 1000])
-    yyaxis right
-    plot(t, simdata(:,[1]), 'LineWidth', 1.5)
-    ylim([-0.5 2])
+    hold on
+    plot(t, (g0*x-g1*(x-1))/k , 'LineWidth', 1.5)
     legend('Protein a', 'Unbound promoter')
